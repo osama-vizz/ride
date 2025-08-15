@@ -5,7 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, Filter, X, DollarSign, Fuel } from "lucide-react";
 import type { RideSearchFilters } from "@shared/schema";
 import { Label } from "@/components/ui/label";
-import { useRouter } from 'next/router';
+import { useLocation } from 'wouter';
 
 interface SearchFiltersProps {
   filters?: RideSearchFilters;
@@ -15,7 +15,7 @@ interface SearchFiltersProps {
 export default function SearchFilters({ filters = {}, onFiltersChange }: SearchFiltersProps) {
   const [localFilters, setLocalFilters] = useState<RideSearchFilters>(filters);
   const [isExpanded, setIsExpanded] = useState(false);
-  const router = useRouter();
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     setLocalFilters(filters);
@@ -42,12 +42,12 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
 
   // Function to handle navigation to About page
   const goToAbout = () => {
-    router.push('/about');
+    setLocation('/about');
   };
 
   // Function to handle navigation to Contact page
   const goToContact = () => {
-    router.push('/contact');
+    setLocation('/contact');
   };
 
   return (
@@ -228,7 +228,7 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
       </Card>
 
       {/* Navigation Buttons for About and Contact */}
-      <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+      <div className="mt-8 flex flex-col sm:flex-col gap-4 justify-center">
         <Button
           variant="outline"
           onClick={goToAbout}

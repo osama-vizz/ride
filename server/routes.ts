@@ -42,6 +42,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get('/api/rides/search', async (req, res) => {
+    try {
+      const { q } = req.query;
+      if (!q || typeof q !== 'string') {
+        return res.status(400).json({ message: "Search query is required" });
+      }
+      const rides = await storage.searchRides(q);
+      res.json(rides);
+    } catch (error) {
+      console.error("Error searching rides:", error);
+      res.status(500).json({ message: "Failed to search rides" });
+    }
+  });
+
   app.get('/api/rides/:id', async (req, res) => {
     try {
       const ride = await storage.getRideById(req.params.id);
@@ -217,7 +231,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(403).json({ message: "Admin access required" });
       }
 
-      const analytics = await storage.getAnalytics();
+      const analytics = await storage.getBookingStats();
       res.json(analytics);
     } catch (error) {
       console.error("Error fetching analytics:", error);

@@ -118,7 +118,7 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl max-h-screen overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-screen overflow-y-auto bg-white border border-slate-200 shadow-lg">
         <DialogHeader>
           <div className="flex justify-between items-center">
             <DialogTitle>Complete Your Booking</DialogTitle>
@@ -128,7 +128,7 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
           </div>
         </DialogHeader>
 
-        <div className="p-6">
+        <div className="p-6 bg-white">
           {/* Ride Details */}
           <div className="mb-6 p-4 bg-slate-50 rounded-lg">
             <div className="flex items-center gap-4">
@@ -151,7 +151,10 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
                   required
                   value={formData.pickupDate}
                   onChange={(e) => setFormData({ ...formData, pickupDate: e.target.value })}
+                  className={errors.pickupDate ? "border-red-500" : ""}
+                  data-testid="input-pickup-date"
                 />
+                {errors.pickupDate && <p className="text-red-500 text-sm mt-1">{errors.pickupDate}</p>}
               </div>
               <div>
                 <Label htmlFor="returnDate">Return Date</Label>
@@ -161,7 +164,10 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
                   required
                   value={formData.returnDate}
                   onChange={(e) => setFormData({ ...formData, returnDate: e.target.value })}
+                  className={errors.returnDate ? "border-red-500" : ""}
+                  data-testid="input-return-date"
                 />
+                {errors.returnDate && <p className="text-red-500 text-sm mt-1">{errors.returnDate}</p>}
               </div>
             </div>
 
@@ -174,7 +180,10 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
                 required
                 value={formData.pickupLocation}
                 onChange={(e) => setFormData({ ...formData, pickupLocation: e.target.value })}
+                className={errors.pickupLocation ? "border-red-500" : ""}
+                data-testid="input-pickup-location"
               />
+              {errors.pickupLocation && <p className="text-red-500 text-sm mt-1">{errors.pickupLocation}</p>}
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
@@ -185,7 +194,7 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
                   value={formData.driverAge}
                   onValueChange={(value) => setFormData({ ...formData, driverAge: value })}
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className={errors.driverAge ? "border-red-500" : ""} data-testid="select-driver-age">
                     <SelectValue placeholder="Select age range" />
                   </SelectTrigger>
                   <SelectContent>
@@ -195,6 +204,7 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
                     <SelectItem value="65+">65+ years</SelectItem>
                   </SelectContent>
                 </Select>
+                {errors.driverAge && <p className="text-red-500 text-sm mt-1">{errors.driverAge}</p>}
               </div>
               <div>
                 <Label htmlFor="phoneNumber">Phone Number</Label>
@@ -205,7 +215,10 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
                   required
                   value={formData.phoneNumber}
                   onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                  className={errors.phoneNumber ? "border-red-500" : ""}
+                  data-testid="input-phone-number"
                 />
+                {errors.phoneNumber && <p className="text-red-500 text-sm mt-1">{errors.phoneNumber}</p>}
               </div>
             </div>
 

@@ -83,10 +83,10 @@ export default function HeroSection() {
                 variants={itemVariants}
               >
                 <div className="flex -space-x-2">
-                  <div className="w-6 h-6 bg-gradient-to-r from-primary to-primary/80 rounded-full border-2 border-white flex items-center justify-center">
+                  <div className="w-6 h-6 bg-primary rounded-full border-2 border-white flex items-center justify-center">
                     <CheckCircle className="w-3 h-3 text-white" />
                   </div>
-                  <div className="w-6 h-6 bg-gradient-to-r from-accent to-accent/80 rounded-full border-2 border-white flex items-center justify-center">
+                  <div className="w-6 h-6 bg-accent rounded-full border-2 border-white flex items-center justify-center">
                     <Zap className="w-3 h-3 text-white" />
                   </div>
                 </div>
@@ -101,7 +101,7 @@ export default function HeroSection() {
               <motion.div className="space-y-6" variants={itemVariants}>
                 <h1 className="font-display text-6xl md:text-7xl lg:text-8xl font-black leading-[0.95] text-balance">
                   <span className="block text-slate-900">Premium</span>
-                  <span className="block bg-gradient-to-r from-primary via-blue-600 to-accent bg-clip-text text-transparent">
+                  <span className="block text-primary">
                     Rideshare
                   </span>
                   <span className="block text-slate-700 text-5xl md:text-6xl lg:text-7xl">Experience</span>

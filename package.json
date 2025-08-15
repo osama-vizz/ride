@@ -7,7 +7,7 @@
     "dev": "NODE_ENV=development tsx server/index.ts",
     "start": "NODE_ENV=production node dist/index.js",
     "build": "npm run build:server && npm run build:client",
-    "build:server": "esbuild server/index.ts --bundle --platform=node --outfile=dist/index.js --external:pg-native",
+    "build:server": "esbuild server/index.ts --bundle --platform=node --format=esm --outfile=dist/index.js --external:pg-native --external:@babel/preset-typescript/package.json --external:lightningcss --external:../pkg --packages=external",
     "build:client": "vite build",
     "db:generate": "drizzle-kit generate",
     "db:push": "drizzle-kit push"

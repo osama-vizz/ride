@@ -1,6 +1,8 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+@import '@fontsource/inter/latin.css';
+@import '@fontsource/poppins/latin.css';
+@import '@fontsource/dm-sans/latin.css';
+@import '@fontsource/plus-jakarta-sans/latin.css';
 
 @tailwind base;
 @tailwind components;
@@ -13,38 +15,44 @@
   --card-foreground: hsl(222, 84%, 5%);
   --popover: hsl(0, 0%, 100%);
   --popover-foreground: hsl(222, 84%, 5%);
-  --primary: hsl(220, 100%, 60%);
-  --primary-foreground: hsl(0, 0%, 98%);
-  --secondary: hsl(210, 40%, 94%);
+  --primary: hsl(230, 95%, 55%);
+  --primary-foreground: hsl(0, 0%, 100%);
+  --secondary: hsl(210, 15%, 96%);
   --secondary-foreground: hsl(222, 84%, 5%);
-  --muted: hsl(210, 40%, 96%);
+  --muted: hsl(210, 15%, 97%);
   --muted-foreground: hsl(215, 16%, 47%);
-  --accent: hsl(142, 76%, 36%);
-  --accent-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(160, 84%, 39%);
+  --accent-foreground: hsl(0, 0%, 100%);
   --destructive: hsl(0, 84%, 60%);
   --destructive-foreground: hsl(0, 0%, 98%);
   --border: hsl(214, 32%, 91%);
   --input: hsl(214, 32%, 91%);
-  --ring: hsl(220, 100%, 60%);
-  --chart-1: hsl(220, 100%, 60%);
-  --chart-2: hsl(142, 76%, 36%);
+  --ring: hsl(230, 95%, 55%);
+  --chart-1: hsl(230, 95%, 55%);
+  --chart-2: hsl(160, 84%, 39%);
   --chart-3: hsl(38, 92%, 50%);
   --chart-4: hsl(280, 100%, 70%);
   --chart-5: hsl(340, 75%, 55%);
   --sidebar: hsl(0, 0%, 100%);
   --sidebar-foreground: hsl(222, 84%, 5%);
-  --sidebar-primary: hsl(220, 100%, 60%);
+  --sidebar-primary: hsl(230, 95%, 55%);
   --sidebar-primary-foreground: hsl(0, 0%, 98%);
   --sidebar-accent: hsl(210, 40%, 94%);
   --sidebar-accent-foreground: hsl(222, 84%, 5%);
   --sidebar-border: hsl(214, 32%, 91%);
-  --sidebar-ring: hsl(220, 100%, 60%);
-  --font-sans: 'Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', sans-serif;
+  --sidebar-ring: hsl(230, 95%, 55%);
+  --font-sans: 'Plus Jakarta Sans', 'Inter', 'DM Sans', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Inter', 'system-ui', sans-serif;
+  --font-body: 'DM Sans', 'Inter', 'system-ui', sans-serif;
   --font-serif: 'ui-serif', 'Georgia', 'Cambria', 'Times New Roman', serif;
   --font-mono: 'ui-monospace', 'SFMono-Regular', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace;
-  --radius: 0.75rem;
+  --radius: 0.875rem;
   --warning: hsl(38, 92%, 50%);
   --warning-foreground: hsl(0, 0%, 0%);
+  --surface: hsl(210, 15%, 98%);
+  --surface-foreground: hsl(222, 84%, 5%);
+  --neutral: hsl(210, 8%, 45%);
+  --neutral-foreground: hsl(210, 8%, 95%);
 }
 
 .dark {
@@ -89,49 +97,66 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', 'Poppins', var(--font-sans);
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    font-family: var(--font-body);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11', 'ss01', 'ss02';
     font-variation-settings: normal;
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     scroll-behavior: smooth;
+    letter-spacing: -0.011em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-sans);
-    font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.2;
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    color: hsl(222, 84%, 5%);
   }
 
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
+    @apply text-5xl md:text-6xl lg:text-7xl xl:text-8xl;
+    font-weight: 800;
+    letter-spacing: -0.05em;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
+    @apply text-3xl md:text-4xl lg:text-5xl xl:text-6xl;
+    font-weight: 700;
+    letter-spacing: -0.04em;
   }
 
   h3 {
-    @apply text-2xl md:text-3xl;
+    @apply text-2xl md:text-3xl lg:text-4xl;
+    font-weight: 650;
+    letter-spacing: -0.03em;
   }
 
   h4 {
-    @apply text-xl md:text-2xl;
+    @apply text-xl md:text-2xl lg:text-3xl;
+    font-weight: 600;
+    letter-spacing: -0.02em;
   }
 
   h5 {
-    @apply text-lg md:text-xl;
+    @apply text-lg md:text-xl lg:text-2xl;
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
 
   h6 {
-    @apply text-base md:text-lg;
+    @apply text-base md:text-lg lg:text-xl;
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 
   p {
     @apply leading-7;
+    font-size: 1.0625rem;
+    color: hsl(215, 16%, 35%);
+    line-height: 1.75;
   }
 
   .text-balance {
@@ -140,6 +165,24 @@
 
   .text-pretty {
     text-wrap: pretty;
+  }
+
+  .text-large {
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  .text-small {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+
+  .font-body {
+    font-family: var(--font-body);
   }
 }
 

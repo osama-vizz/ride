@@ -1,4 +1,3 @@
-
 import { useAuth } from "@/hooks/useAuth";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -71,17 +70,17 @@ export default function RideCard({ ride }: RideCardProps) {
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
             />
           </div>
-          
+
           {/* Overlay gradients */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-          
+
           {/* Category badge */}
           <div className="absolute top-4 left-4">
             <Badge className={`${getCategoryColor(ride.category)} text-white border-0 px-3 py-1 text-sm font-semibold shadow-lg`}>
               {ride.category}
             </Badge>
           </div>
-          
+
           {/* Premium indicator */}
           <div className="absolute top-4 right-4">
             <div className="bg-white/95 backdrop-blur-sm rounded-full p-2 shadow-lg">
@@ -90,26 +89,22 @@ export default function RideCard({ ride }: RideCardProps) {
           </div>
         </div>
 
-        <CardContent className="p-6 space-y-4">
+        <CardContent className="p-8">
           {/* Header Section */}
-          <div className="space-y-2">
-            <div className="flex items-start justify-between">
-              <div className="space-y-1">
-                <h3 className="text-2xl font-bold text-slate-900 font-display group-hover:text-primary transition-colors duration-300" data-testid={`text-model-${ride.id}`}>
-                  {ride.model}
-                </h3>
-                <div className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-slate-500" />
-                  <span className="text-sm text-slate-600 font-medium">Available nearby</span>
-                </div>
+          <div className="flex justify-between items-start mb-6">
+            <div className="flex-1">
+              <h3 className="text-2xl font-bold text-slate-900 mb-2 font-display group-hover:text-primary transition-colors duration-300">
+                {ride.model}
+              </h3>
+              <p className="text-slate-600 font-semibold">
+                {ride.year} • {ride.category}
+              </p>
+            </div>
+            <div className="text-right">
+              <div className="text-3xl font-black text-primary font-display">
+                ${ride.pricePerDay}
               </div>
-              
-              <div className="text-right">
-                <div className="text-3xl font-black text-primary font-display" data-testid={`text-price-${ride.id}`}>
-                  ${ride.pricePerDay}
-                </div>
-                <div className="text-sm text-slate-500 font-medium">per day</div>
-              </div>
+              <div className="text-slate-500 font-semibold">per day</div>
             </div>
           </div>
 
@@ -124,7 +119,7 @@ export default function RideCard({ ride }: RideCardProps) {
                 <div className="text-sm font-semibold text-slate-900">{ride.seats}</div>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl transition-colors hover:bg-slate-100" data-testid={`text-transmission-${ride.id}`}>
               <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
                 <Cog className="w-4 h-4 text-purple-600" />
@@ -134,7 +129,7 @@ export default function RideCard({ ride }: RideCardProps) {
                 <div className="text-sm font-semibold text-slate-900">{ride.transmission}</div>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2 p-3 bg-slate-50 rounded-xl transition-colors hover:bg-slate-100" data-testid={`text-fuel-${ride.id}`}>
               <div className="w-8 h-8 bg-emerald-100 rounded-lg flex items-center justify-center">
                 <Fuel className="w-4 h-4 text-emerald-600" />
@@ -161,7 +156,7 @@ export default function RideCard({ ride }: RideCardProps) {
                 </span>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2 text-emerald-600">
               <Clock className="w-4 h-4" />
               <span className="text-sm font-semibold">Available now</span>

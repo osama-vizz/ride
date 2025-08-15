@@ -40,16 +40,6 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
 
   const hasActiveFilters = Object.values(localFilters).some(value => value !== undefined && value !== null);
 
-  // Function to handle navigation to About page
-  const goToAbout = () => {
-    setLocation('/about');
-  };
-
-  // Function to handle navigation to Contact page
-  const goToContact = () => {
-    setLocation('/contact');
-  };
-
   return (
     <div className="w-full">
       {/* Mobile Filter Toggle */}
@@ -228,22 +218,6 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
         </CardContent>
       </Card>
 
-      {/* Navigation Buttons for About and Contact */}
-      <div className="mt-8 flex flex-col sm:flex-col gap-4 justify-center">
-        <Button
-          variant="outline"
-          onClick={goToAbout}
-          className="border-primary text-primary hover:bg-primary hover:text-white h-12 rounded-xl font-bold text-lg px-8"
-        >
-          About Us
-        </Button>
-        <Button
-          onClick={goToContact}
-          className="bg-primary hover:bg-primary-dark text-white h-12 rounded-xl font-bold text-lg px-8 shadow-lg hover:shadow-xl transition-all duration-200"
-        >
-          Contact Us
-        </Button>
       </div>
-    </div>
   );
 }

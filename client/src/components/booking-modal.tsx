@@ -1,22 +1,25 @@
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { X } from "lucide-react";
-import type { Ride } from "@shared/schema";
+import { X, Calendar, MapPin } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import type { Ride, InsertBooking } from "@shared/schema";
 
 interface BookingModalProps {
   isOpen: boolean;
   onClose: () => void;
   ride: Ride | null;
-  onSubmit: (formData: any) => void;
+  onSubmit: (bookingId: string) => void;
 }
 
 export default function BookingModal({ isOpen, onClose, ride, onSubmit }: BookingModalProps) {
-  const [step, setStep] = useState(1);
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     pickupDate: "",
     returnDate: "",
@@ -24,6 +27,7 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
     driverAge: "",
     phoneNumber: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const calculateDays = () => {
     if (!formData.pickupDate || !formData.returnDate) return 0;
@@ -42,9 +46,72 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
     return (dailyRate + insurance) * days;
   };
 
+  const bookingMutation = useMutation({
+    mutationFn: async (bookingData: any) => {
+      const response = await apiRequest("POST", "/api/bookings", bookingData);
+      return response.json();
+    },
+    onSuccess: (booking) => {
+      toast({
+        title: "Booking Created Successfully! 🎉",
+        description: "Redirecting to payment...",
+      });
+      onSubmit(booking.id);
+      onClose();
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Booking Failed",
+        description: error.message || "Failed to create booking. Please try again.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const validateForm = () => {
+    const newErrors: Record<string, string> = {};
+    
+    if (!formData.pickupDate) newErrors.pickupDate = "Pickup date is required";
+    if (!formData.returnDate) newErrors.returnDate = "Return date is required";
+    if (!formData.pickupLocation) newErrors.pickupLocation = "Pickup location is required";
+    if (!formData.driverAge) newErrors.driverAge = "Driver age is required";
+    if (!formData.phoneNumber) newErrors.phoneNumber = "Phone number is required";
+    
+    if (formData.pickupDate && formData.returnDate) {
+      const pickup = new Date(formData.pickupDate);
+      const returnDate = new Date(formData.returnDate);
+      if (returnDate <= pickup) {
+        newErrors.returnDate = "Return date must be after pickup date";
+      }
+      if (pickup < new Date()) {
+        newErrors.pickupDate = "Pickup date cannot be in the past";
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit({ ...formData, rideId: ride?.id, totalAmount: calculateTotal() });
+    
+    if (!validateForm()) {
+      return;
+    }
+    
+    if (!ride) return;
+    
+    const bookingData = {
+      rideId: ride.id,
+      pickupDate: new Date(formData.pickupDate),
+      returnDate: new Date(formData.returnDate),
+      pickupLocation: formData.pickupLocation,
+      driverAge: formData.driverAge,
+      phoneNumber: formData.phoneNumber,
+      totalAmount: calculateTotal().toString(),
+    };
+    
+    bookingMutation.mutate(bookingData);
   };
 
   if (!ride) return null;
@@ -62,36 +129,13 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
         </DialogHeader>
 
         <div className="p-6">
-          {/* Progress Indicator */}
-          <div className="mb-8">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <div className={`w-8 h-8 ${step >= 1 ? 'bg-primary text-white' : 'bg-slate-200 text-slate-600'} rounded-full flex items-center justify-center text-sm font-medium`}>
-                  1
-                </div>
-                <span className={`ml-2 text-sm font-medium ${step >= 1 ? 'text-primary' : 'text-slate-600'}`}>
-                  Details
-                </span>
-              </div>
-              <div className="flex-1 h-1 bg-slate-200 mx-4">
-                <div className={`h-1 bg-primary transition-all duration-300 ${step >= 2 ? 'w-2/3' : step >= 1 ? 'w-1/3' : 'w-0'}`}></div>
-              </div>
-              <div className="flex items-center">
-                <div className={`w-8 h-8 ${step >= 2 ? 'bg-primary text-white' : 'bg-slate-200 text-slate-600'} rounded-full flex items-center justify-center text-sm font-medium`}>
-                  2
-                </div>
-                <span className={`ml-2 text-sm ${step >= 2 ? 'text-primary font-medium' : 'text-slate-600'}`}>
-                  Payment
-                </span>
-              </div>
-              <div className="flex-1 h-1 bg-slate-200 mx-4"></div>
-              <div className="flex items-center">
-                <div className={`w-8 h-8 ${step >= 3 ? 'bg-primary text-white' : 'bg-slate-200 text-slate-600'} rounded-full flex items-center justify-center text-sm font-medium`}>
-                  3
-                </div>
-                <span className={`ml-2 text-sm ${step >= 3 ? 'text-primary font-medium' : 'text-slate-600'}`}>
-                  Confirm
-                </span>
+          {/* Ride Details */}
+          <div className="mb-6 p-4 bg-slate-50 rounded-lg">
+            <div className="flex items-center gap-4">
+              <img src={ride.imageUrl} alt={ride.model} className="w-16 h-16 object-cover rounded-lg" />
+              <div>
+                <h3 className="font-semibold text-lg">{ride.model}</h3>
+                <p className="text-slate-600">{ride.category} • ${ride.pricePerDay}/day</p>
               </div>
             </div>
           </div>
@@ -195,8 +239,13 @@ export default function BookingModal({ isOpen, onClose, ride, onSubmit }: Bookin
               <Button type="button" variant="outline" className="flex-1" onClick={onClose}>
                 Cancel
               </Button>
-              <Button type="submit" className="flex-1">
-                Proceed to Payment
+              <Button 
+                type="submit" 
+                className="flex-1"
+                disabled={bookingMutation.isPending}
+                data-testid="button-proceed-payment"
+              >
+                {bookingMutation.isPending ? "Creating Booking..." : "Proceed to Payment"}
               </Button>
             </div>
           </form>

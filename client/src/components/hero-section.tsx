@@ -56,16 +56,16 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/40 py-32 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center overflow-hidden">
+    <section className="relative bg-slate-50 py-32 px-4 sm:px-6 lg:px-8 min-h-screen flex items-center overflow-hidden">
       {/* Enhanced Background decoration */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 h-px bg-slate-200"></div>
       </div>
       
-      {/* Floating gradient orbs */}
-      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-primary/5 to-accent/5 rounded-full blur-3xl animate-float"></div>
-      <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gradient-to-r from-purple-400/5 to-pink-400/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
+      {/* Floating decoration */}
+      <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-float"></div>
+      <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-purple-400/5 rounded-full blur-3xl animate-float" style={{ animationDelay: '2s' }}></div>
       
       <div className="max-w-7xl mx-auto relative z-10">
         <motion.div 

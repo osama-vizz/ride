@@ -27,10 +27,9 @@ export default function RideCard({ ride }: RideCardProps) {
     setShowBookingModal(true);
   };
 
-  const handleBookingSubmit = (formData: any) => {
-    // Navigate to the booking page with the form data
-    navigate(`/booking/${ride.id}`);
-    setShowBookingModal(false);
+  const handleBookingSubmit = (bookingId: string) => {
+    // Navigate to the checkout page with the booking ID
+    navigate(`/checkout/${bookingId}`);
   };
 
   const renderStars = (rating: string) => {
@@ -49,13 +48,14 @@ export default function RideCard({ ride }: RideCardProps) {
 
   const getCategoryColor = (category: string) => {
     const colors = {
-      luxury: "bg-gradient-to-r from-purple-600 to-purple-700",
-      economy: "bg-gradient-to-r from-green-600 to-green-700",
-      suv: "bg-gradient-to-r from-blue-600 to-blue-700",
-      sedan: "bg-gradient-to-r from-slate-600 to-slate-700",
-      sports: "bg-gradient-to-r from-red-600 to-red-700",
+      luxury: "bg-purple-600",
+      economy: "bg-green-600",
+      suv: "bg-blue-600",
+      sedan: "bg-slate-600",
+      sports: "bg-red-600",
+      electric: "bg-emerald-600",
     };
-    return colors[category.toLowerCase() as keyof typeof colors] || "bg-gradient-to-r from-slate-600 to-slate-700";
+    return colors[category.toLowerCase() as keyof typeof colors] || "bg-slate-600";
   };
 
   return (
@@ -82,8 +82,8 @@ export default function RideCard({ ride }: RideCardProps) {
               />
             </div>
 
-            {/* Overlay gradients */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            {/* Overlay */}
+            <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             {/* Category badge */}
             <div className="absolute top-4 left-4">
@@ -108,7 +108,7 @@ export default function RideCard({ ride }: RideCardProps) {
                   {ride.model}
                 </h3>
                 <p className="text-slate-600 font-semibold">
-                  {ride.year} • {ride.category}
+                  {ride.category}
                 </p>
               </div>
               <div className="text-right">

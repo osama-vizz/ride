@@ -40,21 +40,31 @@ export default function Rides() {
       <div className="py-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           {isLoading ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="bg-white rounded-xl shadow-lg p-6">
-                  <Skeleton className="w-full h-48 mb-4" />
-                  <Skeleton className="h-6 mb-2" />
-                  <Skeleton className="h-4 mb-4 w-2/3" />
-                  <div className="flex justify-between">
-                    <Skeleton className="h-4 w-20" />
-                    <Skeleton className="h-8 w-24" />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                <div key={i} className="bg-white rounded-2xl shadow-lg border border-slate-200/60 overflow-hidden">
+                  <Skeleton className="w-full aspect-[4/3]" />
+                  <div className="p-6 space-y-4">
+                    <div className="space-y-2">
+                      <Skeleton className="h-7 w-3/4" />
+                      <Skeleton className="h-4 w-1/2" />
+                    </div>
+                    <div className="grid grid-cols-3 gap-3">
+                      {[1, 2, 3].map((j) => (
+                        <Skeleton key={j} className="h-16 rounded-xl" />
+                      ))}
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <Skeleton className="h-5 w-24" />
+                      <Skeleton className="h-4 w-20" />
+                    </div>
+                    <Skeleton className="h-12 w-full rounded-xl" />
                   </div>
                 </div>
               ))}
             </div>
           ) : rides && rides.length > 0 ? (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {rides.map((ride) => (
                 <RideCard key={ride.id} ride={ride} />
               ))}

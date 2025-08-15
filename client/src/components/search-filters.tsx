@@ -1,223 +1,323 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, X, DollarSign, Fuel } from "lucide-react";
-import type { RideSearchFilters } from "@shared/schema";
+import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useLocation } from 'wouter';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Badge } from "@/components/ui/badge";
+import { Search, Filter, X, MapPin, Calendar, DollarSign, Users, Fuel, Settings } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SearchFiltersProps {
-  filters?: RideSearchFilters;
-  onFiltersChange?: (filters: RideSearchFilters) => void;
+  onSearch: (filters: any) => void;
 }
 
-export default function SearchFilters({ filters = {}, onFiltersChange }: SearchFiltersProps) {
-  const [localFilters, setLocalFilters] = useState<RideSearchFilters>(filters);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [, setLocation] = useLocation();
+export default function SearchFilters({ onSearch }: SearchFiltersProps) {
+  const [filters, setFilters] = useState({
+    location: "",
+    pickupDate: "",
+    returnDate: "",
+    vehicleType: "",
+    priceRange: [0, 500],
+    transmission: "",
+    fuelType: "",
+    seats: ""
+  });
 
-  useEffect(() => {
-    setLocalFilters(filters);
-  }, [filters]);
+  const [showAdvanced, setShowAdvanced] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
-  const handleFilterChange = (key: keyof RideSearchFilters, value: string | undefined) => {
-    // Ensure value is undefined if it's "all" or "any" to match backend expectations
-    const processedValue = (value === "all" || value === "any") ? undefined : value;
-    const newFilters = { ...localFilters, [key]: processedValue };
-    setLocalFilters(newFilters);
+  const handleFilterChange = (key: string, value: any) => {
+    const newFilters = { ...filters, [key]: value };
+    setFilters(newFilters);
+    
+    // Update active filters
+    const active = Object.entries(newFilters)
+      .filter(([k, v]) => {
+        if (k === 'priceRange') return v[0] !== 0 || v[1] !== 500;
+        return v !== "" && v !== null && v !== undefined;
+      })
+      .map(([k]) => k);
+    setActiveFilters(active);
   };
 
-  const handleApplyFilters = () => {
-    onFiltersChange?.(localFilters);
+  const clearFilter = (key: string) => {
+    if (key === 'priceRange') {
+      handleFilterChange(key, [0, 500]);
+    } else {
+      handleFilterChange(key, "");
+    }
   };
 
-  const handleClearFilters = () => {
-    const clearedFilters: RideSearchFilters = {};
-    setLocalFilters(clearedFilters);
-    onFiltersChange?.(clearedFilters);
+  const clearAllFilters = () => {
+    const resetFilters = {
+      location: "",
+      pickupDate: "",
+      returnDate: "",
+      vehicleType: "",
+      priceRange: [0, 500],
+      transmission: "",
+      fuelType: "",
+      seats: ""
+    };
+    setFilters(resetFilters);
+    setActiveFilters([]);
+    onSearch(resetFilters);
   };
 
-  const hasActiveFilters = Object.values(localFilters).some(value => value !== undefined && value !== null);
+  const handleSearch = () => {
+    onSearch(filters);
+  };
+
+  const getFilterLabel = (key: string, value: any) => {
+    switch (key) {
+      case 'priceRange':
+        return `$${value[0]} - $${value[1]}`;
+      case 'vehicleType':
+        return value;
+      case 'transmission':
+        return value;
+      case 'fuelType':
+        return value;
+      case 'seats':
+        return `${value} seats`;
+      case 'location':
+        return value;
+      case 'pickupDate':
+        return `Pickup: ${new Date(value).toLocaleDateString()}`;
+      case 'returnDate':
+        return `Return: ${new Date(value).toLocaleDateString()}`;
+      default:
+        return value;
+    }
+  };
 
   return (
-    <div className="w-full">
-      {/* Mobile Filter Toggle */}
-      <div className="lg:hidden mb-4">
-        <Button
-          variant="outline"
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full justify-between bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
-        >
-          <div className="flex items-center">
-            <Filter className="w-4 h-4 mr-2" />
-            Filter Vehicles
-            {hasActiveFilters && (
-              <span className="ml-2 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                Active
-              </span>
-            )}
-          </div>
-          <div className={`transform transition-transform ${isExpanded ? 'rotate-180' : ''}`}>
-            ▼
-          </div>
-        </Button>
-      </div>
-
-      {/* Filter Card */}
-      <Card className={`bg-white shadow-lg border-0 ${isExpanded || 'hidden lg:block'}`}>
+    <div className="space-y-6">
+      {/* Main Search Card */}
+      <Card className="bg-white/95 backdrop-blur-lg border-0 shadow-2xl rounded-2xl overflow-hidden">
         <CardContent className="p-8">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div className="flex items-center">
-              <div className="bg-blue-100 p-3 rounded-xl mr-4">
-                <Search className="w-6 h-6 text-blue-600" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-slate-900 font-display">Filter Vehicles</h3>
-                <p className="text-slate-600 text-sm">Find your perfect ride with advanced filters</p>
-              </div>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 bg-gradient-to-r from-primary to-accent rounded-xl flex items-center justify-center">
+              <Search className="w-5 h-5 text-white" />
             </div>
-            {hasActiveFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={handleClearFilters}
-                className="text-slate-500 hover:text-slate-700"
-              >
-                <X className="w-4 h-4 mr-1" />
-                Clear All
-              </Button>
-            )}
+            <h2 className="text-2xl font-bold text-slate-900 font-display">Find Your Perfect Ride</h2>
           </div>
 
-          {/* Filter Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-            {/* Car Type */}
-            <div className="space-y-3">
-              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wider">
+          {/* Primary Filters Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            <div className="space-y-2">
+              <Label htmlFor="location" className="flex items-center gap-2 text-slate-700 font-semibold">
+                <MapPin className="w-4 h-4" />
+                Location
+              </Label>
+              <Input
+                id="location"
+                type="text"
+                placeholder="Enter city or airport"
+                value={filters.location}
+                onChange={(e) => handleFilterChange("location", e.target.value)}
+                className="h-12 border-slate-300 focus:border-primary focus:ring-primary/20 rounded-xl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="pickupDate" className="flex items-center gap-2 text-slate-700 font-semibold">
+                <Calendar className="w-4 h-4" />
+                Pickup Date
+              </Label>
+              <Input
+                id="pickupDate"
+                type="date"
+                value={filters.pickupDate}
+                onChange={(e) => handleFilterChange("pickupDate", e.target.value)}
+                className="h-12 border-slate-300 focus:border-primary focus:ring-primary/20 rounded-xl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="returnDate" className="flex items-center gap-2 text-slate-700 font-semibold">
+                <Calendar className="w-4 h-4" />
+                Return Date
+              </Label>
+              <Input
+                id="returnDate"
+                type="date"
+                value={filters.returnDate}
+                onChange={(e) => handleFilterChange("returnDate", e.target.value)}
+                className="h-12 border-slate-300 focus:border-primary focus:ring-primary/20 rounded-xl"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="flex items-center gap-2 text-slate-700 font-semibold">
                 Vehicle Type
-              </label>
-              <Select 
-                value={localFilters.carType || "all"} 
-                onValueChange={(value) => handleFilterChange('carType', value)}
-              >
-                <SelectTrigger className="bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500 h-12 rounded-xl font-medium">
-                  <SelectValue placeholder="All Types" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-slate-200 shadow-xl">
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="Economy">Economy</SelectItem>
-                  <SelectItem value="Compact">Compact</SelectItem>
-                  <SelectItem value="SUV">SUV</SelectItem>
-                  <SelectItem value="Luxury">Luxury</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Price Range */}
-            <div className="space-y-3">
-              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wider">
-                Price Range
-              </label>
-              <Select 
-                value={localFilters.priceRange || "all"} 
-                onValueChange={(value) => handleFilterChange('priceRange', value)}
-              >
-                <SelectTrigger className="bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500 h-12 rounded-xl font-medium">
-                  <SelectValue placeholder="Any Price" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-slate-200 shadow-xl">
-                  <SelectItem value="all" className="font-medium">Any Price</SelectItem>
-                  <SelectItem value="25-50" className="font-medium">$25-50/day</SelectItem>
-                  <SelectItem value="50-100" className="font-medium">$50-100/day</SelectItem>
-                  <SelectItem value="100+" className="font-medium">$100+/day</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Transmission */}
-            <div className="space-y-3">
-              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wider">
-                Transmission
-              </label>
-              <Select 
-                value={localFilters.transmission || "all"} 
-                onValueChange={(value) => handleFilterChange('transmission', value)}
-              >
-                <SelectTrigger className="bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500 h-12 rounded-xl font-medium">
+              </Label>
+              <Select value={filters.vehicleType} onValueChange={(value) => handleFilterChange("vehicleType", value)}>
+                <SelectTrigger className="h-12 border-slate-300 focus:border-primary focus:ring-primary/20 rounded-xl">
                   <SelectValue placeholder="Any Type" />
                 </SelectTrigger>
-                <SelectContent className="rounded-xl border-slate-200 shadow-xl">
-                  <SelectItem value="all" className="font-medium">Any Type</SelectItem>
-                  <SelectItem value="Automatic" className="font-medium">Automatic</SelectItem>
-                  <SelectItem value="Manual" className="font-medium">Manual</SelectItem>
+                <SelectContent>
+                  <SelectItem value="economy">Economy</SelectItem>
+                  <SelectItem value="compact">Compact</SelectItem>
+                  <SelectItem value="suv">SUV</SelectItem>
+                  <SelectItem value="luxury">Luxury</SelectItem>
+                  <SelectItem value="sports">Sports</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-
-            {/* Fuel Type */}
-            <div className="space-y-3">
-              <label className="block text-sm font-bold text-slate-800 uppercase tracking-wider">
-                Fuel Type
-              </label>
-              <Select 
-                value={localFilters.fuelType || "all"} 
-                onValueChange={(value) => handleFilterChange('fuelType', value)}
-              >
-                <SelectTrigger className="bg-slate-50 border-slate-200 focus:border-blue-500 focus:ring-blue-500 h-12 rounded-xl font-medium">
-                  <SelectValue placeholder="Any Fuel" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-slate-200 shadow-xl">
-                  <SelectItem value="all">All Fuel Types</SelectItem>
-                  <SelectItem value="gasoline">Gasoline</SelectItem>
-                  <SelectItem value="electric">Electric</SelectItem>
-                  <SelectItem value="hybrid">Hybrid</SelectItem>
-                  <SelectItem value="diesel">Diesel</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-
-            {/* Apply Button */}
-            <div className="flex items-end">
-              <Button 
-                onClick={handleApplyFilters}
-                className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 rounded-xl font-bold text-sm uppercase tracking-wider shadow-lg hover:shadow-xl transition-all duration-200"
-                data-testid="button-apply-filters"
-              >
-                <Search className="w-4 h-4 mr-2" />
-                Apply Filters
-              </Button>
             </div>
           </div>
 
-          {/* Active Filters Display */}
-          {hasActiveFilters && (
-            <div className="mt-6 pt-6 border-t border-slate-200">
-              <div className="flex flex-wrap gap-2">
-                <span className="text-sm font-medium text-slate-600">Active filters:</span>
-                {Object.entries(localFilters).map(([key, value]) => 
-                  value !== undefined && value !== "all" ? (
-                    <span 
-                      key={key}
-                      className="inline-flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full"
-                    >
-                      {value}
-                      <button
-                        onClick={() => handleFilterChange(key as keyof RideSearchFilters, "all")}
-                        className="ml-2 hover:bg-blue-200 rounded-full p-0.5"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </span>
-                  ) : null
-                )}
-              </div>
+          {/* Advanced Filters Toggle */}
+          <div className="flex items-center justify-between mb-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="flex items-center gap-2 h-10 border-slate-300 hover:border-primary hover:bg-primary/5 rounded-xl"
+            >
+              <Filter className="w-4 h-4" />
+              Advanced Filters
+              <motion.div
+                animate={{ rotate: showAdvanced ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+              >
+                <X className="w-4 h-4" />
+              </motion.div>
+            </Button>
+
+            {activeFilters.length > 0 && (
+              <Button
+                variant="ghost"
+                onClick={clearAllFilters}
+                className="text-slate-600 hover:text-slate-800"
+              >
+                Clear All ({activeFilters.length})
+              </Button>
+            )}
+          </div>
+
+          {/* Advanced Filters */}
+          <AnimatePresence>
+            {showAdvanced && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 pt-4 border-t border-slate-200">
+                  <div className="space-y-3">
+                    <Label className="flex items-center gap-2 text-slate-700 font-semibold">
+                      <DollarSign className="w-4 h-4" />
+                      Price Range (per day)
+                    </Label>
+                    <div className="px-3">
+                      <Slider
+                        value={filters.priceRange}
+                        onValueChange={(value) => handleFilterChange("priceRange", value)}
+                        max={500}
+                        min={0}
+                        step={10}
+                        className="w-full"
+                      />
+                      <div className="flex justify-between text-sm text-slate-600 mt-2">
+                        <span>${filters.priceRange[0]}</span>
+                        <span>${filters.priceRange[1]}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-2 text-slate-700 font-semibold">
+                      <Settings className="w-4 h-4" />
+                      Transmission
+                    </Label>
+                    <Select value={filters.transmission} onValueChange={(value) => handleFilterChange("transmission", value)}>
+                      <SelectTrigger className="h-12 border-slate-300 focus:border-primary focus:ring-primary/20 rounded-xl">
+                        <SelectValue placeholder="Any Transmission" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="automatic">Automatic</SelectItem>
+                        <SelectItem value="manual">Manual</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-2 text-slate-700 font-semibold">
+                      <Fuel className="w-4 h-4" />
+                      Fuel Type
+                    </Label>
+                    <Select value={filters.fuelType} onValueChange={(value) => handleFilterChange("fuelType", value)}>
+                      <SelectTrigger className="h-12 border-slate-300 focus:border-primary focus:ring-primary/20 rounded-xl">
+                        <SelectValue placeholder="Any Fuel Type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="petrol">Petrol</SelectItem>
+                        <SelectItem value="diesel">Diesel</SelectItem>
+                        <SelectItem value="electric">Electric</SelectItem>
+                        <SelectItem value="hybrid">Hybrid</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label className="flex items-center gap-2 text-slate-700 font-semibold">
+                      <Users className="w-4 h-4" />
+                      Seats
+                    </Label>
+                    <Select value={filters.seats} onValueChange={(value) => handleFilterChange("seats", value)}>
+                      <SelectTrigger className="h-12 border-slate-300 focus:border-primary focus:ring-primary/20 rounded-xl">
+                        <SelectValue placeholder="Any Seats" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="2">2 Seats</SelectItem>
+                        <SelectItem value="4">4 Seats</SelectItem>
+                        <SelectItem value="5">5 Seats</SelectItem>
+                        <SelectItem value="7">7 Seats</SelectItem>
+                        <SelectItem value="8">8+ Seats</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Active Filters */}
+          {activeFilters.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-6">
+              {activeFilters.map((key) => (
+                <Badge
+                  key={key}
+                  variant="secondary"
+                  className="flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary border-primary/20 rounded-full"
+                >
+                  {getFilterLabel(key, filters[key as keyof typeof filters])}
+                  <button
+                    onClick={() => clearFilter(key)}
+                    className="ml-1 hover:bg-primary/20 rounded-full p-0.5 transition-colors"
+                  >
+                    <X className="w-3 h-3" />
+                  </button>
+                </Badge>
+              ))}
             </div>
           )}
+
+          {/* Search Button */}
+          <Button
+            onClick={handleSearch}
+            className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            <Search className="w-5 h-5 mr-2" />
+            Search Vehicles
+          </Button>
         </CardContent>
       </Card>
-
-      </div>
+    </div>
   );
 }

@@ -7,11 +7,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+        sans: ['Inter', 'Poppins', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         serif: ['ui-serif', 'Georgia', 'Cambria', 'Times New Roman', 'serif'],
         mono: ['ui-monospace', 'SFMono-Regular', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', 'monospace'],
         inter: ['Inter', 'sans-serif'],
-        display: ['Inter', 'system-ui', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        display: ['Poppins', 'Inter', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'xs': ['0.75rem', { lineHeight: '1rem' }],
@@ -152,24 +153,62 @@ export default {
           to: { height: "0" },
         },
         fadeIn: {
-          from: { opacity: "0", transform: "translateY(20px)" },
+          from: { opacity: "0", transform: "translateY(30px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
         slideUp: {
-          from: { opacity: "0", transform: "translateY(10px)" },
+          from: { opacity: "0", transform: "translateY(20px)" },
           to: { opacity: "1", transform: "translateY(0)" },
         },
         scaleIn: {
-          from: { opacity: "0", transform: "scale(0.95)" },
+          from: { opacity: "0", transform: "scale(0.9)" },
           to: { opacity: "1", transform: "scale(1)" },
+        },
+        slideInLeft: {
+          from: { opacity: "0", transform: "translateX(-50px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        slideInRight: {
+          from: { opacity: "0", transform: "translateX(50px)" },
+          to: { opacity: "1", transform: "translateX(0)" },
+        },
+        float: {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-10px)" },
+        },
+        bounce: {
+          "0%, 20%, 53%, 80%, 100%": { transform: "translateY(0)" },
+          "40%, 43%": { transform: "translateY(-10px)" },
+          "70%": { transform: "translateY(-5px)" },
+          "90%": { transform: "translateY(-2px)" },
+        },
+        pulse: {
+          "0%, 100%": { opacity: "1" },
+          "50%": { opacity: "0.7" },
+        },
+        shimmer: {
+          "0%": { backgroundPosition: "-468px 0" },
+          "100%": { backgroundPosition: "468px 0" },
+        },
+        gradient: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "fadeIn": "fadeIn 0.6s ease-out",
-        "slideUp": "slideUp 0.4s ease-out",
-        "scaleIn": "scaleIn 0.3s ease-out",
+        "fadeIn": "fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+        "slideUp": "slideUp 0.6s cubic-bezier(0.4, 0, 0.2, 1)",
+        "scaleIn": "scaleIn 0.5s cubic-bezier(0.4, 0, 0.2, 1)",
+        "slideInLeft": "slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+        "slideInRight": "slideInRight 0.8s cubic-bezier(0.4, 0, 0.2, 1)",
+        "float": "float 3s ease-in-out infinite",
+        "bounce-gentle": "bounce 2s infinite",
+        "pulse-slow": "pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "shimmer": "shimmer 1.5s ease-in-out infinite",
+        "gradient": "gradient 3s ease infinite",
       },
       boxShadow: {
         'xs': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',

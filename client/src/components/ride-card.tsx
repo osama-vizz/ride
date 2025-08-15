@@ -12,9 +12,11 @@ import type { Ride } from "@shared/schema";
 
 interface RideCardProps {
   ride: Ride;
+  onAddToComparison?: () => void;
+  isInComparison?: boolean;
 }
 
-export default function RideCard({ ride }: RideCardProps) {
+export default function RideCard({ ride, onAddToComparison, isInComparison }: RideCardProps) {
   const { isAuthenticated } = useAuth();
   const [, navigate] = useLocation();
   const [showBookingModal, setShowBookingModal] = useState(false);
@@ -180,17 +182,35 @@ export default function RideCard({ ride }: RideCardProps) {
               <span className="text-sm font-medium">{ride.location}</span>
             </div>
 
-            {/* Action Button */}
-            <Button 
-              onClick={handleBookNow}
-              className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
-              data-testid={`button-book-${ride.id}`}
-            >
-              <span>Book Now</span>
-              <div className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                →
-              </div>
-            </Button>
+            {/* Action Buttons */}
+            <div className="space-y-3">
+              <Button 
+                onClick={handleBookNow}
+                className="w-full h-12 bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
+                data-testid={`button-book-${ride.id}`}
+              >
+                <span>Book Now</span>
+                <div className="ml-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  →
+                </div>
+              </Button>
+              
+              {onAddToComparison && (
+                <Button 
+                  onClick={onAddToComparison}
+                  variant="outline"
+                  disabled={isInComparison}
+                  className={`w-full py-3 text-sm font-semibold rounded-xl border-2 transition-all duration-300 ${
+                    isInComparison 
+                      ? 'border-green-500 text-green-600 bg-green-50 cursor-not-allowed' 
+                      : 'border-blue-500 text-blue-600 hover:bg-blue-50 hover:border-blue-600'
+                  }`}
+                  data-testid={`button-compare-${ride.id}`}
+                >
+                  {isInComparison ? '✓ Added to Compare' : 'Compare'}
+                </Button>
+              )}
+            </div>
           </CardContent>
         </Card>
       </motion.div>

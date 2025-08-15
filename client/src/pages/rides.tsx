@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import Navigation from "@/components/navigation";
-import SearchFilters from "@/components/search-filters";
+import { AdvancedSearch } from "@/components/advanced-search";
+import { RideComparison } from "@/components/ride-comparison";
 import RideCard from "@/components/ride-card";
 import Footer from "@/components/footer";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -17,6 +18,7 @@ export default function Rides() {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [sortBy, setSortBy] = useState<'price' | 'rating' | 'newest'>('rating');
   const [isVisible, setIsVisible] = useState(false);
+  const [comparisonRides, setComparisonRides] = useState<Ride[]>([]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -45,6 +47,24 @@ export default function Rides() {
 
   const handleSearch = (searchFilters: any) => {
     setFilters(searchFilters);
+  };
+
+  const handleAddToComparison = (ride: Ride) => {
+    if (comparisonRides.find(r => r.id === ride.id)) return;
+    if (comparisonRides.length >= 4) {
+      alert('You can compare maximum 4 vehicles at a time');
+      return;
+    }
+    setComparisonRides([...comparisonRides, ride]);
+  };
+
+  const handleRemoveFromComparison = (rideId: string) => {
+    setComparisonRides(comparisonRides.filter(r => r.id !== rideId));
+  };
+
+  const handleBookRide = (ride: Ride) => {
+    // Navigate to booking page
+    window.location.href = `/booking?rideId=${ride.id}`;
   };
 
   const getActiveFilterCount = () => {
@@ -105,7 +125,7 @@ export default function Rides() {
             animate={{ opacity: isVisible ? 1 : 0, y: isVisible ? 0 : 30 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            <SearchFilters onSearch={handleSearch} />
+            <AdvancedSearch onSearch={handleSearch} isLoading={isLoading} />
           </motion.div>
         </div>
       </div>
@@ -166,6 +186,22 @@ export default function Rides() {
               </select>
             </div>
           </motion.div>
+
+          {/* Comparison Section */}
+          {comparisonRides.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-8"
+            >
+              <RideComparison 
+                rides={comparisonRides}
+                onRemoveFromComparison={handleRemoveFromComparison}
+                onBookRide={handleBookRide}
+              />
+            </motion.div>
+          )}
+
           <AnimatePresence mode="wait">
             {isLoading ? (
               <motion.div 
@@ -248,7 +284,11 @@ export default function Rides() {
                     whileHover={{ y: -8 }}
                     className="transform transition-all duration-300"
                   >
-                    <RideCard ride={ride} />
+                    <RideCard 
+                      ride={ride} 
+                      onAddToComparison={() => handleAddToComparison(ride)}
+                      isInComparison={comparisonRides.some(r => r.id === ride.id)}
+                    />
                   </motion.div>
                 ))}
               </motion.div>

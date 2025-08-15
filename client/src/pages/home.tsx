@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import Navigation from "@/components/navigation";
 import FeaturedRides from "@/components/featured-rides";
 import FeaturesSection from "@/components/features-section";
+import ServicesSection from "@/components/services-section";
 import Footer from "@/components/footer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -151,6 +152,7 @@ export default function Home() {
       </div>
 
       <FeaturedRides />
+      <ServicesSection />
       <FeaturesSection />
       <Footer />
     </div>

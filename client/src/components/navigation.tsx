@@ -42,8 +42,18 @@ export default function Navigation() {
             >
               Browse Rides
             </Link>
-            <a href="#about" className="text-slate-600 hover:text-primary transition-colors">About</a>
-            <a href="#contact" className="text-slate-600 hover:text-primary transition-colors">Contact</a>
+            <Link 
+              href="/about" 
+              className={`transition-colors ${location === '/about' ? 'text-primary' : 'text-slate-600 hover:text-primary'}`}
+            >
+              About
+            </Link>
+            <Link 
+              href="/contact" 
+              className={`transition-colors ${location === '/contact' ? 'text-primary' : 'text-slate-600 hover:text-primary'}`}
+            >
+              Contact
+            </Link>
           </nav>
 
           <div className="flex items-center space-x-4">

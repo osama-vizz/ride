@@ -1,10 +1,11 @@
-
 import { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, Filter, X } from "lucide-react";
+import { Search, Filter, X, DollarSign, Fuel } from "lucide-react";
 import type { RideSearchFilters } from "@shared/schema";
+import { Label } from "@/components/ui/label";
+import { useRouter } from 'next/router';
 
 interface SearchFiltersProps {
   filters?: RideSearchFilters;
@@ -14,13 +15,16 @@ interface SearchFiltersProps {
 export default function SearchFilters({ filters = {}, onFiltersChange }: SearchFiltersProps) {
   const [localFilters, setLocalFilters] = useState<RideSearchFilters>(filters);
   const [isExpanded, setIsExpanded] = useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     setLocalFilters(filters);
   }, [filters]);
 
-  const handleFilterChange = (key: keyof RideSearchFilters, value: string) => {
-    const newFilters = { ...localFilters, [key]: value === "all" ? undefined : value };
+  const handleFilterChange = (key: keyof RideSearchFilters, value: string | undefined) => {
+    // Ensure value is undefined if it's "all" or "any" to match backend expectations
+    const processedValue = (value === "all" || value === "any") ? undefined : value;
+    const newFilters = { ...localFilters, [key]: processedValue };
     setLocalFilters(newFilters);
   };
 
@@ -29,12 +33,22 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
   };
 
   const handleClearFilters = () => {
-    const clearedFilters = {};
+    const clearedFilters: RideSearchFilters = {};
     setLocalFilters(clearedFilters);
     onFiltersChange?.(clearedFilters);
   };
 
-  const hasActiveFilters = Object.values(localFilters).some(value => value && value !== "all");
+  const hasActiveFilters = Object.values(localFilters).some(value => value !== undefined && value !== null);
+
+  // Function to handle navigation to About page
+  const goToAbout = () => {
+    router.push('/about');
+  };
+
+  // Function to handle navigation to Contact page
+  const goToContact = () => {
+    router.push('/contact');
+  };
 
   return (
     <div className="w-full">
@@ -110,7 +124,7 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
                 </SelectContent>
               </Select>
             </div>
-            
+
             {/* Price Range */}
             <div className="space-y-3">
               <label className="block text-sm font-bold text-slate-800 uppercase tracking-wider">
@@ -131,7 +145,7 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
                 </SelectContent>
               </Select>
             </div>
-            
+
             {/* Transmission */}
             <div className="space-y-3">
               <label className="block text-sm font-bold text-slate-800 uppercase tracking-wider">
@@ -151,7 +165,7 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
                 </SelectContent>
               </Select>
             </div>
-            
+
             {/* Fuel Type */}
             <div className="space-y-3">
               <label className="block text-sm font-bold text-slate-800 uppercase tracking-wider">
@@ -172,7 +186,7 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
                 </SelectContent>
               </Select>
             </div>
-            
+
             {/* Apply Button */}
             <div className="flex items-end">
               <Button 
@@ -192,7 +206,7 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
               <div className="flex flex-wrap gap-2">
                 <span className="text-sm font-medium text-slate-600">Active filters:</span>
                 {Object.entries(localFilters).map(([key, value]) => 
-                  value && value !== "all" ? (
+                  value !== undefined && value !== "all" ? (
                     <span 
                       key={key}
                       className="inline-flex items-center bg-blue-100 text-blue-800 text-xs font-medium px-3 py-1 rounded-full"
@@ -212,6 +226,23 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
           )}
         </CardContent>
       </Card>
+
+      {/* Navigation Buttons for About and Contact */}
+      <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <Button
+          variant="outline"
+          onClick={goToAbout}
+          className="border-primary text-primary hover:bg-primary hover:text-white h-12 rounded-xl font-bold text-lg px-8"
+        >
+          About Us
+        </Button>
+        <Button
+          onClick={goToContact}
+          className="bg-primary hover:bg-primary-dark text-white h-12 rounded-xl font-bold text-lg px-8 shadow-lg hover:shadow-xl transition-all duration-200"
+        >
+          Contact Us
+        </Button>
+      </div>
     </div>
   );
 }

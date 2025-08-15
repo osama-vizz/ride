@@ -116,11 +116,11 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
                   <SelectValue placeholder="All Types" />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl border-slate-200 shadow-xl">
-                  <SelectItem value="all" className="font-medium">All Types</SelectItem>
-                  <SelectItem value="Economy" className="font-medium">Economy</SelectItem>
-                  <SelectItem value="Compact" className="font-medium">Compact</SelectItem>
-                  <SelectItem value="SUV" className="font-medium">SUV</SelectItem>
-                  <SelectItem value="Luxury" className="font-medium">Luxury</SelectItem>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="Economy">Economy</SelectItem>
+                  <SelectItem value="Compact">Compact</SelectItem>
+                  <SelectItem value="SUV">SUV</SelectItem>
+                  <SelectItem value="Luxury">Luxury</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -179,10 +179,11 @@ export default function SearchFilters({ filters = {}, onFiltersChange }: SearchF
                   <SelectValue placeholder="Any Fuel" />
                 </SelectTrigger>
                 <SelectContent className="rounded-xl border-slate-200 shadow-xl">
-                  <SelectItem value="all" className="font-medium">Any Fuel</SelectItem>
-                  <SelectItem value="Gasoline" className="font-medium">Gasoline</SelectItem>
-                  <SelectItem value="Hybrid" className="font-medium">Hybrid</SelectItem>
-                  <SelectItem value="Electric" className="font-medium">Electric</SelectItem>
+                  <SelectItem value="all">All Fuel Types</SelectItem>
+                  <SelectItem value="gasoline">Gasoline</SelectItem>
+                  <SelectItem value="electric">Electric</SelectItem>
+                  <SelectItem value="hybrid">Hybrid</SelectItem>
+                  <SelectItem value="diesel">Diesel</SelectItem>
                 </SelectContent>
               </Select>
             </div>

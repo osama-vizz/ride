@@ -1,18 +1,21 @@
 import { useState, useEffect } from "react";
 import { useLocation, useParams } from "wouter";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { isUnauthorizedError } from "@/lib/authUtils";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest, queryClient } from "@/lib/queryClient";
 import Navigation from "@/components/navigation";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Calendar, MapPin, Users, Cog, Fuel, Star } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Calendar, MapPin, Users, Cog, Fuel, Star, CreditCard, CheckCircle, Clock, ArrowRight, ArrowLeft, Shield, AlertCircle } from "lucide-react";
 import type { Ride, InsertBooking } from "@shared/schema";
 
 export default function Booking() {
@@ -21,6 +24,7 @@ export default function Booking() {
   const { isAuthenticated, isLoading: authLoading } = useAuth();
   const { toast } = useToast();
 
+  const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     pickupDate: "",
     returnDate: "",
@@ -28,6 +32,12 @@ export default function Booking() {
     driverAge: "",
     phoneNumber: "",
   });
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -56,8 +66,8 @@ export default function Booking() {
     },
     onSuccess: (booking) => {
       toast({
-        title: "Booking Created",
-        description: "Proceeding to payment...",
+        title: "Booking Created! 🎉",
+        description: "Redirecting to secure payment...",
       });
       navigate(`/checkout/${booking.id}`);
     },

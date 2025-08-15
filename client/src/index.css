@@ -497,22 +497,54 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgb(241 245 249);
+  background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgb(148 163 184);
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(100 116 139);
+  background: #94a3b8;
+}
+
+/* Professional filter animations */
+.filter-card-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.filter-card-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms ease-out, transform 300ms ease-out;
+}
+
+/* Enhanced select styling */
+[data-radix-select-trigger] {
+  transition: all 0.2s ease-in-out;
+}
+
+[data-radix-select-trigger]:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Filter button hover effects */
+.filter-apply-btn {
+  transition: all 0.2s ease-in-out;
+}
+
+.filter-apply-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
 }
 
 /* Enhanced card animations */

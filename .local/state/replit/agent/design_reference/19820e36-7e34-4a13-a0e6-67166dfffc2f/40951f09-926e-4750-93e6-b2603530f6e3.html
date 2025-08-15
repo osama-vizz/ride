@@ -1,0 +1,1021 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RideShare Pro - Premium Ride Booking Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'inter': ['Inter', 'sans-serif']
+                    },
+                    colors: {
+                        primary: '#2563EB',
+                        secondary: '#64748B', 
+                        accent: '#10B981',
+                        warning: '#F59E0B'
+                    }
+                }
+            }
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="font-inter bg-slate-50 text-slate-800">
+
+    <!-- @COMPONENT: NavigationHeader -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-car text-primary text-2xl"></i>
+                    <span class="text-xl font-bold text-slate-800">RideShare Pro</span>
+                </div>
+                
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#home" class="text-slate-600 hover:text-primary transition-colors">Home</a>
+                    <a href="#rides" class="text-slate-600 hover:text-primary transition-colors">Browse Rides</a>
+                    <a href="#about" class="text-slate-600 hover:text-primary transition-colors">About</a>
+                    <a href="#contact" class="text-slate-600 hover:text-primary transition-colors">Contact</a>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <button data-event="click:handleLogin" class="text-slate-600 hover:text-primary transition-colors hidden sm:block">
+                        Sign In
+                    </button>
+                    <button data-event="click:handleSignup" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                        Sign Up
+                    </button>
+                    <button class="md:hidden text-slate-600">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- @END_COMPONENT: NavigationHeader -->
+
+    <!-- @COMPONENT: HeroSection -->
+    <section id="home" class="relative bg-gradient-to-br from-blue-50 to-indigo-100 py-16 lg:py-24">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="space-y-8">
+                    <h1 class="text-4xl lg:text-6xl font-bold text-slate-800 leading-tight">
+                        Book Your Perfect 
+                        <span class="text-primary">Ride</span> Today
+                    </h1>
+                    <p class="text-xl text-slate-600 leading-relaxed">
+                        Premium vehicles, competitive rates, and seamless booking experience. 
+                        Find the perfect ride for any occasion.
+                    </p>
+                    
+                    <!-- @COMPONENT: QuickSearchForm -->
+                    <div class="bg-white rounded-xl shadow-lg p-6 space-y-4">
+                        <h3 class="text-lg font-semibold text-slate-800 mb-4">Quick Search</h3>
+                        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Pickup Location</label>
+                                <input type="text" placeholder="Enter city or address" 
+                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Pickup Date</label>
+                                <input type="date" 
+                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-2">Return Date</label>
+                                <input type="date" 
+                                       class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            </div>
+                            <div class="flex items-end">
+                                <button data-event="click:handleSearch" 
+                                        class="w-full bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                                    <i class="fas fa-search mr-2"></i>Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- @END_COMPONENT: QuickSearchForm -->
+                </div>
+
+                <div class="relative">
+                    <!-- Hero image of modern car lineup -->
+                    <img src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=600" 
+                         alt="Modern car lineup showcasing premium vehicles" 
+                         class="rounded-xl shadow-2xl w-full h-auto">
+                    
+                    <!-- Floating stats card -->
+                    <div class="absolute -bottom-6 -left-6 bg-white rounded-lg shadow-lg p-4 hidden lg:block">
+                        <div class="flex items-center space-x-4">
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-primary" data-bind="stats.totalRides">50K+</div>
+                                <div class="text-sm text-slate-600">Happy Customers</div>
+                            </div>
+                            <div class="h-8 w-px bg-slate-300"></div>
+                            <div class="text-center">
+                                <div class="text-2xl font-bold text-primary" data-bind="stats.avgRating">4.9</div>
+                                <div class="text-sm text-slate-600">Average Rating</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: HeroSection -->
+
+    <!-- @COMPONENT: FeaturedRidesSection -->
+    <section id="rides" class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold text-slate-800 mb-4">Featured Rides</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Discover our most popular vehicles, carefully selected for comfort, reliability, and style.
+                </p>
+            </div>
+
+            <!-- @COMPONENT: SearchFilters -->
+            <div class="bg-slate-50 rounded-xl p-6 mb-8">
+                <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Car Type</label>
+                        <select class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option>All Types</option>
+                            <option>Economy</option>
+                            <option>Compact</option>
+                            <option>SUV</option>
+                            <option>Luxury</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Price Range</label>
+                        <select class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option>Any Price</option>
+                            <option>$25-50/day</option>
+                            <option>$50-100/day</option>
+                            <option>$100+/day</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Transmission</label>
+                        <select class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option>Any</option>
+                            <option>Automatic</option>
+                            <option>Manual</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Fuel Type</label>
+                        <select class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option>Any</option>
+                            <option>Gasoline</option>
+                            <option>Hybrid</option>
+                            <option>Electric</option>
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button data-event="click:handleFilter" 
+                                class="w-full bg-secondary text-white px-4 py-2 rounded-lg hover:bg-slate-600 transition-colors">
+                            Apply Filters
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_COMPONENT: SearchFilters -->
+
+            <!-- @MAP: featuredRides.map(ride => ( -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Ride Card 1 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <!-- Luxury sedan image -->
+                    <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+                         alt="Luxury black sedan for premium ride experience" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="text-xl font-semibold text-slate-800" data-bind="ride.model">BMW 5 Series</h3>
+                                <p class="text-slate-600" data-bind="ride.category">Luxury Sedan</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-primary" data-bind="ride.price">$89</div>
+                                <div class="text-sm text-slate-600">per day</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 text-sm text-slate-600 mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-users mr-1"></i>
+                                <span data-bind="ride.seats">5 seats</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-cog mr-1"></i>
+                                <span data-bind="ride.transmission">Auto</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-gas-pump mr-1"></i>
+                                <span data-bind="ride.fuel">Hybrid</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400 mr-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm text-slate-600" data-bind="ride.rating">4.9 (124)</span>
+                            </div>
+                            <button data-event="click:handleBookNow" data-ride-id="1" 
+                                    class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ride Card 2 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <!-- Compact SUV image -->
+                    <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+                         alt="Modern white SUV perfect for family trips" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="text-xl font-semibold text-slate-800" data-bind="ride.model">Honda CR-V</h3>
+                                <p class="text-slate-600" data-bind="ride.category">Compact SUV</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-primary" data-bind="ride.price">$65</div>
+                                <div class="text-sm text-slate-600">per day</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 text-sm text-slate-600 mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-users mr-1"></i>
+                                <span data-bind="ride.seats">5 seats</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-cog mr-1"></i>
+                                <span data-bind="ride.transmission">Auto</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-gas-pump mr-1"></i>
+                                <span data-bind="ride.fuel">Gasoline</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400 mr-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <span class="text-sm text-slate-600" data-bind="ride.rating">4.8 (89)</span>
+                            </div>
+                            <button data-event="click:handleBookNow" data-ride-id="2" 
+                                    class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Ride Card 3 -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                    <!-- Economy car image -->
+                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=400" 
+                         alt="Efficient economy car ideal for city driving" 
+                         class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h3 class="text-xl font-semibold text-slate-800" data-bind="ride.model">Toyota Camry</h3>
+                                <p class="text-slate-600" data-bind="ride.category">Economy</p>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-2xl font-bold text-primary" data-bind="ride.price">$45</div>
+                                <div class="text-sm text-slate-600">per day</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-center space-x-4 text-sm text-slate-600 mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-users mr-1"></i>
+                                <span data-bind="ride.seats">5 seats</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-cog mr-1"></i>
+                                <span data-bind="ride.transmission">Auto</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-gas-pump mr-1"></i>
+                                <span data-bind="ride.fuel">Gasoline</span>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="flex text-yellow-400 mr-2">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                </div>
+                                <span class="text-sm text-slate-600" data-bind="ride.rating">4.6 (76)</span>
+                            </div>
+                            <button data-event="click:handleBookNow" data-ride-id="3" 
+                                    class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- @END_MAP )) -->
+
+            <div class="text-center mt-12">
+                <button data-event="click:handleViewAllRides" 
+                        class="bg-secondary text-white px-8 py-3 rounded-lg hover:bg-slate-600 transition-colors font-medium">
+                    View All Rides
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: FeaturedRidesSection -->
+
+    <!-- @COMPONENT: BookingModal [hidden by default] -->
+    <div id="bookingModal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 items-center justify-center p-4">
+        <div class="bg-white rounded-xl max-w-2xl w-full max-h-screen overflow-y-auto">
+            <div class="p-6 border-b border-slate-200">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold text-slate-800">Complete Your Booking</h2>
+                    <button data-event="click:closeModal" class="text-slate-400 hover:text-slate-600">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="p-6">
+                <!-- @COMPONENT: BookingProgress -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center text-sm font-medium">1</div>
+                            <span class="ml-2 text-sm font-medium text-primary">Details</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-slate-200 mx-4">
+                            <div class="h-1 bg-primary w-1/3"></div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center text-sm font-medium">2</div>
+                            <span class="ml-2 text-sm text-slate-600">Payment</span>
+                        </div>
+                        <div class="flex-1 h-1 bg-slate-200 mx-4"></div>
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-slate-200 text-slate-600 rounded-full flex items-center justify-center text-sm font-medium">3</div>
+                            <span class="ml-2 text-sm text-slate-600">Confirm</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- @END_COMPONENT: BookingProgress -->
+
+                <!-- @COMPONENT: BookingForm -->
+                <form data-event="submit:handleBookingSubmit" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Pickup Date</label>
+                            <input type="date" required 
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Return Date</label>
+                            <input type="date" required 
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Pickup Location</label>
+                        <input type="text" placeholder="Enter pickup address" required 
+                               class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Driver Age</label>
+                            <select required class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Select age range</option>
+                                <option value="21-25">21-25 years</option>
+                                <option value="26-35">26-35 years</option>
+                                <option value="36-65">36-65 years</option>
+                                <option value="65+">65+ years</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+                            <input type="tel" placeholder="+1 (555) 123-4567" required 
+                                   class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                    </div>
+
+                    <!-- @COMPONENT: BookingSummary -->
+                    <div class="bg-slate-50 rounded-lg p-4 space-y-3">
+                        <h3 class="font-semibold text-slate-800">Booking Summary</h3>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-600">Vehicle:</span>
+                            <span data-bind="selectedRide.model">BMW 5 Series</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-600">Daily Rate:</span>
+                            <span data-bind="selectedRide.price">$89/day</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-600">Duration:</span>
+                            <span data-bind="booking.duration">3 days</span>
+                        </div>
+                        <div class="flex justify-between text-sm">
+                            <span class="text-slate-600">Insurance:</span>
+                            <span>$15/day</span>
+                        </div>
+                        <div class="border-t border-slate-200 pt-2 flex justify-between font-semibold">
+                            <span>Total:</span>
+                            <span data-bind="booking.total">$312</span>
+                        </div>
+                    </div>
+                    <!-- @END_COMPONENT: BookingSummary -->
+
+                    <div class="flex space-x-4">
+                        <button type="button" data-event="click:closeModal" 
+                                class="flex-1 bg-slate-200 text-slate-700 py-3 rounded-lg hover:bg-slate-300 transition-colors font-medium">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="flex-1 bg-primary text-white py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                            Proceed to Payment
+                        </button>
+                    </div>
+                </form>
+                <!-- @END_COMPONENT: BookingForm -->
+            </div>
+        </div>
+    </div>
+    <!-- @END_COMPONENT: BookingModal -->
+
+    <!-- @COMPONENT: UserDashboard [hidden by default] -->
+    <section id="userDashboard" class="hidden py-16 bg-slate-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- @COMPONENT: DashboardSidebar -->
+                    <div class="lg:w-1/4">
+                        <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+                            <div class="text-center">
+                                <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-user text-white text-2xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-slate-800" data-bind="user.name">John Smith</h3>
+                                <p class="text-sm text-slate-600" data-bind="user.email">john@example.com</p>
+                            </div>
+                            
+                            <nav class="space-y-2">
+                                <a href="#bookings" class="block px-4 py-2 text-primary bg-blue-50 rounded-lg font-medium">
+                                    <i class="fas fa-calendar-alt mr-2"></i>My Bookings
+                                </a>
+                                <a href="#profile" class="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
+                                    <i class="fas fa-user mr-2"></i>Profile Settings
+                                </a>
+                                <a href="#payments" class="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
+                                    <i class="fas fa-credit-card mr-2"></i>Payment Methods
+                                </a>
+                                <a href="#logout" class="block px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- @END_COMPONENT: DashboardSidebar -->
+
+                    <!-- @COMPONENT: DashboardContent -->
+                    <div class="lg:w-3/4">
+                        <div class="space-y-6">
+                            <div class="flex justify-between items-center">
+                                <h2 class="text-2xl font-bold text-slate-800">My Bookings</h2>
+                                <button data-event="click:handleNewBooking" 
+                                        class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                    <i class="fas fa-plus mr-2"></i>New Booking
+                                </button>
+                            </div>
+
+                            <!-- @MAP: userBookings.map(booking => ( -->
+                            <div class="space-y-4">
+                                <!-- Active Booking -->
+                                <div class="bg-white rounded-xl shadow-sm p-6">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center space-x-4">
+                                            <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-medium">Active</span>
+                                            <span class="text-slate-600" data-bind="booking.id">Booking #12345</span>
+                                        </div>
+                                        <span class="text-slate-600" data-bind="booking.date">Dec 15-18, 2023</span>
+                                    </div>
+                                    
+                                    <div class="grid md:grid-cols-3 gap-6">
+                                        <div class="flex items-center space-x-4">
+                                            <!-- Booked car thumbnail -->
+                                            <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=80" 
+                                                 alt="BMW 5 Series booking thumbnail" 
+                                                 class="w-16 h-12 object-cover rounded-lg">
+                                            <div>
+                                                <h4 class="font-semibold text-slate-800" data-bind="booking.vehicle">BMW 5 Series</h4>
+                                                <p class="text-sm text-slate-600" data-bind="booking.location">Downtown, NYC</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="space-y-1">
+                                            <p class="text-sm text-slate-600">Total Amount</p>
+                                            <p class="text-xl font-bold text-slate-800" data-bind="booking.total">$312</p>
+                                        </div>
+                                        
+                                        <div class="flex space-x-2">
+                                            <button data-event="click:handleViewDetails" 
+                                                    class="flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-lg hover:bg-slate-200 transition-colors text-sm">
+                                                View Details
+                                            </button>
+                                            <button data-event="click:handleModifyBooking" 
+                                                    class="flex-1 bg-primary text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                                                Modify
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Completed Booking -->
+                                <div class="bg-white rounded-xl shadow-sm p-6">
+                                    <div class="flex items-center justify-between mb-4">
+                                        <div class="flex items-center space-x-4">
+                                            <span class="bg-slate-400 text-white px-3 py-1 rounded-full text-sm font-medium">Completed</span>
+                                            <span class="text-slate-600" data-bind="booking.id">Booking #12344</span>
+                                        </div>
+                                        <span class="text-slate-600" data-bind="booking.date">Nov 10-12, 2023</span>
+                                    </div>
+                                    
+                                    <div class="grid md:grid-cols-3 gap-6">
+                                        <div class="flex items-center space-x-4">
+                                            <!-- Previous booking car thumbnail -->
+                                            <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=100&h=80" 
+                                                 alt="Honda CR-V completed booking thumbnail" 
+                                                 class="w-16 h-12 object-cover rounded-lg">
+                                            <div>
+                                                <h4 class="font-semibold text-slate-800" data-bind="booking.vehicle">Honda CR-V</h4>
+                                                <p class="text-sm text-slate-600" data-bind="booking.location">Airport, NYC</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="space-y-1">
+                                            <p class="text-sm text-slate-600">Total Amount</p>
+                                            <p class="text-xl font-bold text-slate-800" data-bind="booking.total">$195</p>
+                                        </div>
+                                        
+                                        <div class="flex space-x-2">
+                                            <button data-event="click:handleViewReceipt" 
+                                                    class="flex-1 bg-slate-100 text-slate-700 py-2 px-4 rounded-lg hover:bg-slate-200 transition-colors text-sm">
+                                                Receipt
+                                            </button>
+                                            <button data-event="click:handleBookAgain" 
+                                                    class="flex-1 bg-secondary text-white py-2 px-4 rounded-lg hover:bg-slate-600 transition-colors text-sm">
+                                                Book Again
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- @END_MAP )) -->
+                        </div>
+                    </div>
+                    <!-- @END_COMPONENT: DashboardContent -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: UserDashboard -->
+
+    <!-- @COMPONENT: AdminDashboard [hidden by default] -->
+    <section id="adminDashboard" class="hidden py-16 bg-slate-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- @COMPONENT: AdminSidebar -->
+                    <div class="lg:w-1/4">
+                        <div class="bg-white rounded-xl shadow-sm p-6 space-y-4">
+                            <div class="text-center">
+                                <div class="w-20 h-20 bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-user-shield text-white text-2xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-slate-800">Admin Panel</h3>
+                                <p class="text-sm text-slate-600">RideShare Pro</p>
+                            </div>
+                            
+                            <nav class="space-y-2">
+                                <a href="#analytics" class="block px-4 py-2 text-primary bg-blue-50 rounded-lg font-medium">
+                                    <i class="fas fa-chart-bar mr-2"></i>Analytics
+                                </a>
+                                <a href="#rides-mgmt" class="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
+                                    <i class="fas fa-car mr-2"></i>Manage Rides
+                                </a>
+                                <a href="#bookings-mgmt" class="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
+                                    <i class="fas fa-calendar-check mr-2"></i>Bookings
+                                </a>
+                                <a href="#users-mgmt" class="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
+                                    <i class="fas fa-users mr-2"></i>Users
+                                </a>
+                                <a href="#settings" class="block px-4 py-2 text-slate-600 hover:bg-slate-50 rounded-lg">
+                                    <i class="fas fa-cog mr-2"></i>Settings
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- @END_COMPONENT: AdminSidebar -->
+
+                    <!-- @COMPONENT: AdminContent -->
+                    <div class="lg:w-3/4">
+                        <div class="space-y-6">
+                            <!-- @COMPONENT: AnalyticsCards -->
+                            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                <div class="bg-white rounded-xl shadow-sm p-6">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-slate-600">Total Bookings</p>
+                                            <p class="text-2xl font-bold text-slate-800" data-bind="analytics.totalBookings">1,234</p>
+                                        </div>
+                                        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-calendar-check text-primary text-xl"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 text-sm text-accent">
+                                        <i class="fas fa-arrow-up mr-1"></i>+12% from last month
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-xl shadow-sm p-6">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-slate-600">Revenue</p>
+                                            <p class="text-2xl font-bold text-slate-800" data-bind="analytics.revenue">$45,890</p>
+                                        </div>
+                                        <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-dollar-sign text-accent text-xl"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 text-sm text-accent">
+                                        <i class="fas fa-arrow-up mr-1"></i>+8% from last month
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-xl shadow-sm p-6">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-slate-600">Active Rides</p>
+                                            <p class="text-2xl font-bold text-slate-800" data-bind="analytics.activeRides">48</p>
+                                        </div>
+                                        <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-car text-purple-600 text-xl"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 text-sm text-slate-600">
+                                        85% utilization rate
+                                    </div>
+                                </div>
+
+                                <div class="bg-white rounded-xl shadow-sm p-6">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <p class="text-sm text-slate-600">Total Users</p>
+                                            <p class="text-2xl font-bold text-slate-800" data-bind="analytics.totalUsers">2,567</p>
+                                        </div>
+                                        <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                            <i class="fas fa-users text-orange-600 text-xl"></i>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 text-sm text-accent">
+                                        <i class="fas fa-arrow-up mr-1"></i>+15% new users
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- @END_COMPONENT: AnalyticsCards -->
+
+                            <!-- @COMPONENT: RideManagement -->
+                            <div class="bg-white rounded-xl shadow-sm">
+                                <div class="p-6 border-b border-slate-200">
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-xl font-semibold text-slate-800">Ride Management</h3>
+                                        <button data-event="click:handleAddRide" 
+                                                class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                            <i class="fas fa-plus mr-2"></i>Add New Ride
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="p-6">
+                                    <!-- @MAP: managedRides.map(ride => ( -->
+                                    <div class="space-y-4">
+                                        <div class="border border-slate-200 rounded-lg p-4">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center space-x-4">
+                                                    <!-- Car management thumbnail -->
+                                                    <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=80&h=60" 
+                                                         alt="BMW 5 Series for admin management" 
+                                                         class="w-16 h-12 object-cover rounded-lg">
+                                                    <div>
+                                                        <h4 class="font-semibold text-slate-800" data-bind="ride.model">BMW 5 Series</h4>
+                                                        <p class="text-sm text-slate-600" data-bind="ride.category">Luxury Sedan</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="flex items-center space-x-6">
+                                                    <div class="text-center">
+                                                        <p class="text-sm text-slate-600">Daily Rate</p>
+                                                        <p class="font-semibold text-slate-800" data-bind="ride.price">$89</p>
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <p class="text-sm text-slate-600">Status</p>
+                                                        <span class="bg-accent text-white px-2 py-1 rounded-full text-xs" data-bind="ride.status">Available</span>
+                                                    </div>
+                                                    <div class="flex space-x-2">
+                                                        <button data-event="click:handleEditRide" 
+                                                                class="bg-slate-100 text-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-200 transition-colors">
+                                                            Edit
+                                                        </button>
+                                                        <button data-event="click:handleToggleStatus" 
+                                                                class="bg-warning text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 transition-colors">
+                                                            Disable
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="border border-slate-200 rounded-lg p-4">
+                                            <div class="flex items-center justify-between">
+                                                <div class="flex items-center space-x-4">
+                                                    <!-- Second car management thumbnail -->
+                                                    <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=80&h=60" 
+                                                         alt="Honda CR-V for admin management" 
+                                                         class="w-16 h-12 object-cover rounded-lg">
+                                                    <div>
+                                                        <h4 class="font-semibold text-slate-800" data-bind="ride.model">Honda CR-V</h4>
+                                                        <p class="text-sm text-slate-600" data-bind="ride.category">Compact SUV</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="flex items-center space-x-6">
+                                                    <div class="text-center">
+                                                        <p class="text-sm text-slate-600">Daily Rate</p>
+                                                        <p class="font-semibold text-slate-800" data-bind="ride.price">$65</p>
+                                                    </div>
+                                                    <div class="text-center">
+                                                        <p class="text-sm text-slate-600">Status</p>
+                                                        <span class="bg-warning text-white px-2 py-1 rounded-full text-xs" data-bind="ride.status">Maintenance</span>
+                                                    </div>
+                                                    <div class="flex space-x-2">
+                                                        <button data-event="click:handleEditRide" 
+                                                                class="bg-slate-100 text-slate-700 px-3 py-1 rounded text-sm hover:bg-slate-200 transition-colors">
+                                                            Edit
+                                                        </button>
+                                                        <button data-event="click:handleToggleStatus" 
+                                                                class="bg-accent text-white px-3 py-1 rounded text-sm hover:bg-green-600 transition-colors">
+                                                            Enable
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- @END_MAP )) -->
+                                </div>
+                            </div>
+                            <!-- @END_COMPONENT: RideManagement -->
+                        </div>
+                    </div>
+                    <!-- @END_COMPONENT: AdminContent -->
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: AdminDashboard -->
+
+    <!-- @COMPONENT: Features Section -->
+    <section class="py-16 bg-slate-50">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold text-slate-800 mb-4">Why Choose RideShare Pro?</h2>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Experience the difference with our premium ride booking platform designed for your convenience.
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-sm p-8 text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-shield-alt text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">Secure & Safe</h3>
+                    <p class="text-slate-600">All vehicles are regularly inspected and insured. Your safety is our top priority.</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-8 text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-clock text-accent text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">24/7 Support</h3>
+                    <p class="text-slate-600">Round-the-clock customer support to assist you whenever you need help.</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm p-8 text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-mobile-alt text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-slate-800 mb-4">Easy Booking</h3>
+                    <p class="text-slate-600">Simple and intuitive booking process that takes just a few clicks.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- @END_COMPONENT: Features Section -->
+
+    <!-- @COMPONENT: Footer -->
+    <footer class="bg-slate-800 text-white py-12">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-6">
+                        <i class="fas fa-car text-primary text-2xl"></i>
+                        <span class="text-xl font-bold">RideShare Pro</span>
+                    </div>
+                    <p class="text-slate-300 mb-4">
+                        Premium ride booking platform offering the best vehicles and customer experience.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-slate-300 hover:text-primary transition-colors">
+                            <i class="fab fa-facebook text-xl"></i>
+                        </a>
+                        <a href="#" class="text-slate-300 hover:text-primary transition-colors">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-slate-300 hover:text-primary transition-colors">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-300 hover:text-primary transition-colors">Browse Rides</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-primary transition-colors">How It Works</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-primary transition-colors">Pricing</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-primary transition-colors">Locations</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Support</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-slate-300 hover:text-primary transition-colors">Help Center</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-primary transition-colors">Contact Us</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-primary transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="text-slate-300 hover:text-primary transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-semibold mb-6">Contact Info</h4>
+                    <div class="space-y-3">
+                        <div class="flex items-center">
+                            <i class="fas fa-phone mr-3 text-primary"></i>
+                            <span class="text-slate-300">+1 (555) 123-4567</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope mr-3 text-primary"></i>
+                            <span class="text-slate-300">support@ridesharepro.com</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-3 text-primary"></i>
+                            <span class="text-slate-300">123 Business Ave, NY 10001</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-700 mt-12 pt-8 text-center">
+                <p class="text-slate-300">
+                    © 2023 RideShare Pro. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+    <!-- @END_COMPONENT: Footer -->
+
+    <script>
+        // TODO: Implement business logic, API calls, and state management
+        (() => {
+            // Simple UI interactions for demonstration
+            let isBookingModalOpen = false;
+            let currentView = 'home';
+
+            // Mock data for demonstration
+            const mockData = {
+                rides: [
+                    { id: 1, model: 'BMW 5 Series', category: 'Luxury Sedan', price: 89, rating: 4.9 },
+                    { id: 2, model: 'Honda CR-V', category: 'Compact SUV', price: 65, rating: 4.8 },
+                    { id: 3, model: 'Toyota Camry', category: 'Economy', price: 45, rating: 4.6 }
+                ]
+            };
+
+            // Event listeners for demo interactions
+            document.addEventListener('click', (e) => {
+                const target = e.target.closest('[data-event]');
+                if (!target) return;
+
+                const [event, handler] = target.dataset.event.split(':');
+                
+                if (event === 'click') {
+                    switch (handler) {
+                        case 'handleBookNow':
+                            openBookingModal();
+                            break;
+                        case 'closeModal':
+                            closeBookingModal();
+                            break;
+                        case 'handleLogin':
+                            showUserDashboard();
+                            break;
+                        case 'handleSignup':
+                            showUserDashboard();
+                            break;
+                        default:
+                            console.log(`Handler ${handler} clicked`);
+                    }
+                }
+            });
+
+            function openBookingModal() {
+                const modal = document.getElementById('bookingModal');
+                if (modal) {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    isBookingModalOpen = true;
+                }
+            }
+
+            function closeBookingModal() {
+                const modal = document.getElementById('bookingModal');
+                if (modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    isBookingModalOpen = false;
+                }
+            }
+
+            function showUserDashboard() {
+                document.getElementById('userDashboard').classList.remove('hidden');
+                document.querySelector('header').scrollIntoView();
+            }
+
+            // Close modal on outside click
+            document.addEventListener('click', (e) => {
+                if (isBookingModalOpen && e.target.id === 'bookingModal') {
+                    closeBookingModal();
+                }
+            });
+
+            // Smooth scrolling for navigation
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
